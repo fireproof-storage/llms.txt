@@ -26,12 +26,13 @@ Deliver runnable applications via ChatGPT Canvas, v0, bolt.new, or Claude Artifa
 
 ## ⚛️ React Example
 
-You can use `useDocument` to manage individual documents and `useLiveQuery` to listen for real-time changes. For example:
+You can use Fireproof's hooks to build a complete application in a single component. The example below demonstrates both basic document handling and optional file uploads:
 
 ```js
 import { useFireproof } from "use-fireproof";
 import { useState, useEffect } from "react";
 
+// Optional component for displaying uploaded images
 function ImageDisplay({ meta }) {
   const [imgUrl, setImgUrl] = useState("");
   
@@ -51,15 +52,16 @@ function ImageDisplay({ meta }) {
 function App() {
   const { useDocument, useLiveQuery } = useFireproof("my-ledger");
   const { doc, merge, submit } = useDocument({ 
-    text: "Initial Data", 
+    text: "", 
     timestamp: Date.now(),
-    _files: {} 
+    _files: {} // Optional for file handling
   });
   const { docs } = useLiveQuery("_id", { limit: 10, descending: true });
 
   return (
     <div>
       <form onSubmit={submit}>
+        {/* Optional file input */}
         <input
           type="file"
           accept="image/*"
@@ -68,29 +70,31 @@ function App() {
         <input
           value={doc.text}
           onChange={(e) => merge({ text: e.target.value })}
-          placeholder="Image caption"
+          placeholder="Enter text"
         />
         <button type="submit">Save</button>
       </form>
 
-      <div>
+      <h3>Recent Documents</h3>
+      <ul>
         {docs.map((doc) => (
-          <div key={doc._id}>
+          <li key={doc._id}>
+            {/* Optional image display */}
             {doc._files?.image && <ImageDisplay meta={doc._files.image} />}
             <div>{doc.text}</div>
-          </div>
+          </li>
         ))}
-      </div>
+      </ul>
     </div>
   );
 }
 ```
 
-To sort all documents withing a specific tag, use a view function and map by prefix (note that the function is sandboxed and can only access the document fields):
+To sort documents by more than one field, use a sandboxed function instead of a field name:
 
 ```js
-const queryResult = useLiveQuery(
-  (doc) => [doc.list_id, doc.timestamp], 
+const { docs } = useLiveQuery(
+  (doc) => [doc.list_id, doc.author], 
   { descending: true, limit: 5, prefix: ["zyx-456-list-id"] }
 );
 ```
