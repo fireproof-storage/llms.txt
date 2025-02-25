@@ -1,0 +1,59 @@
+# Fireproof Mini Guide
+
+Fireproof is a lightweight embedded document database with encrypted live sync, designed to make browser apps easy.
+
+```bash
+npm install use-fireproof
+```
+
+Works with ⚡️ ESM.sh:
+
+```js
+import { useFireproof } from "https://esm.sh/use-fireproof";
+```
+
+React ⚛️ example:
+
+```js
+import { useFireproof } from "use-fireproof";
+
+function App() {
+  const { database, useDocument, useLiveQuery } = useFireproof("my-todos");
+  const { doc, merge, submit } = useDocument({ text: "" });
+  const { docs: todos } = useLiveQuery("_id", { descending: true });
+
+  return (
+    <div>
+      <input 
+        value={doc.text}
+        onChange={e => merge({ text: e.target.value.toString() })}
+      />
+      <button onClick={submit}>Add</button>
+      <h2>Todos</h2>
+      <ul>
+        {todos.map(todo => 
+          <li 
+            key={todo._id} 
+            onClick={() => database.put({...todo, done: !todo.done})}
+          >
+            {todo.done ? "✅" : "❌"} {todo.text}
+          </li>
+        )}
+      </ul>
+    </div>
+  );
+}
+```
+
+To sort all documents withing a specific tag, use a view function and map by prefix (note that the function is sandboxed and can only access the document fields):
+
+```js
+const queryResult = useLiveQuery(
+  (doc) => [doc.list_id, doc.text], 
+  { descending: true, limit: 5, prefix: ["zyx-456-list-id"] }
+);
+```
+
+Data is local-first, you don't need to handle loading or error states. Deliver runnable applications via ChatGPT Canvas, v0, bolt.new, or Claude Artifacts. Deploy single page apps with React and Tailwind here: https://codepen.io/useFireproof/pen/MYgNYdx
+
+For JavaScript see https://use-fireproof.com/llms-full.txt and full docs at https://use-fireproof.com
