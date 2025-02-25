@@ -1,26 +1,38 @@
-# Using llms-full.txt with Fireproof
+# Better AI Coding with Fireproof: `llms-full.txt`
 
-The Fireproof `llms-full.txt` file is accelerates app generation by providing API documentation and database best practices. It's optimized to make one shot apps a success.
+Fireproof is an open-source JavaScript database that works locally and syncs effortlessly to the cloud—no backend setup required. By including `llms-full.txt` in your prompts, AI models gain a deep understanding of Fireproof's API, allowing them to generate fully functional applications without extra backend configuration dependencies. Use this txt file in your prompts, and may be surprised how often your prompts become "one shots that work." 
 
-## Quick Start
+## 🚀 Why Use `llms-full.txt`?
 
-In ChatGPT, just visit our [specialized GPT assistant](https://chatgpt.com/g/g-67bd0ebe210081918561667c08662d03-vibe-coding-with-fireproof).
+AI-assisted development works best when the model understands the tools you're using. The `llms-full.txt` file enhances LLM-generated code by providing:  
 
-With any other model, copy the content of [`llms-full.txt`](https://use-fireproof.com/llms-full.txt) into a new prompt, and send it to your LLM. The LLM should respond by writing a compact runnable application that uses Fireproof.
+- **Comprehensive API documentation** for Fireproof  
+- **Best practices for data modeling** in a local-first environment  
+- **Pre-built examples** to ensure AI-generated code is runnable out-of-the-box  
 
-## LLM Integration
+With this file, AI models can generate complete Fireproof-powered applications that work immediately—no backend, no SQL, just a simple, local JavaScript database.  
 
-The `llms-full.txt` file serves as a standardized interface for LLMs to understand and interact with Fireproof databases. It provides:
-- API documentation
-- Best practices for data modeling
-- Example applications
+## ⚡ Quick Start  
+  
+### 🔹 In ChatGPT  
+Use our [specialized GPT assistant](https://chatgpt.com/g/g-67bd0ebe210081918561667c08662d03-vibe-coding-with-fireproof) for optimized AI coding with Fireproof.  
 
-### About llms.txt
+### 🔹 With Any Other LLM  
+1. Copy the contents of [`llms-full.txt`](https://use-fireproof.com/llms-full.txt).  
+2. Paste it into your prompt before asking the model to generate code using Fireproof.  
+3. Watch as the AI produces a compact, working application with built-in Fireproof integration.  
 
-The `/llms.txt` file is a standardized markdown document that enhances website accessibility for large language models (LLMs). It provides a concise, machine-readable overview of a website's content, enabling LLMs to efficiently process relevant information. Proposed by Jeremy Howard in September 2024, it complements existing standards like [`robots.txt`](https://www.robotstxt.org/) and [`sitemap.xml`](https://www.sitemaps.org/), focusing on AI reasoning engines. The file is typically hosted at `https://example.com/llms.txt` and includes essential website information, documentation links, and resources. For more details, visit [llmstxt.org](https://llmstxt.org) or read about its [functionality and benefits](https://www.tryprofound.com/guides/what-is-llms-txt-guide).
+## 📜 How `llms-full.txt` Works  
 
+`llms-full.txt` acts as a structured reference, ensuring that LLMs understand how to interact with Fireproof databases effectively. It follows the `llms.txt` standard, which improves AI reasoning by providing essential documentation in a machine-readable format.  
 
-## Learn More
+### 📖 What is `llms.txt`?  
 
-- [Fireproof Documentation](https://use-fireproof.com)
-- [Fireproof Blog](https://fireproof.storage/blog)
+The `llms.txt` format was proposed by Jeremy Howard in 2024 as an AI-friendly documentation standard. Similar to `robots.txt` for search engines, `llms.txt` helps LLMs understand and utilize a project's API and best practices.  
+
+For more details, visit [llmstxt.org](https://llmstxt.org).  
+
+## 📚 Learn More  
+
+- 📖 [Fireproof Documentation](https://use-fireproof.com)  
+- 📝 [Fireproof Blog](https://fireproof.storage/blog)  
