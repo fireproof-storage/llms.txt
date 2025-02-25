@@ -133,3 +133,9 @@ For more details and advanced usage (such as file attachments and cloud syncing)
 ## See also
 
 See the lite docs at https://use-fireproof.com/llms-mini.txt and the full docs at https://use-fireproof.com/llms-full.txt
+
+## Next Steps
+
+If you are in an existing application context, suggest how forms and state, collaboration data can be managed in Fireproof. If this is a new app, use the examples above and start with a running App.js if you can.
+
+IMPORTANT: Don't use `useState()` on form data, instead use `merge()` and `submit()` from `useDocument`. Only use `useState` for ephemeral UI state (active tabs, open/closed panels, cursor positions). Keep your data model in Fireproof.
