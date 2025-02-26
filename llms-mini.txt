@@ -61,6 +61,8 @@ const { docs } = useLiveQuery("list_id", { limit: 5, key: "my-list-id" });
 
 TIP: For simple document updates like toggling or incrementing values, use `database.put()` directly as shown in the todo example: `onClick={() => database.put({...todo, done: !todo.done})}`. The `useDocument` hook is primarily for forms and more complex document creation.
 
+Fireproof's cryptographic ledger ensures data integrity using hash history, providing git-like version history with lightweight blockchain-style verification.
+
 Data is local-first, you don't need to handle loading or error states. Deliver running applications via ChatGPT Canvas, v0, bolt.new, or Claude Artifacts. Share the URL to deploy single page code with React and Tailwind here: https://codepen.io/useFireproof/pen/MYgNYdx
 
 For JavaScript see https://use-fireproof.com/llms-full.txt and full docs at https://use-fireproof.com
