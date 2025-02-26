@@ -1,4 +1,4 @@
-# Fireproof Mini Guide
+# Fireproof Database Guide
 
 Fireproof is a lightweight embedded document database with encrypted live sync, designed to make browser apps easy.
 
@@ -20,22 +20,23 @@ import { useFireproof } from "use-fireproof";
 function App() {
   const { database, useDocument, useLiveQuery } = useFireproof("my-todos");
   const { doc, merge, submit } = useDocument({ text: "" });
-  const { docs: todos } = useLiveQuery("_id", { descending: true });
+  const { docs } = useLiveQuery("_id", { descending: true });
 
   return (
     <div>
       <input 
         value={doc.text}
-        onChange={e => merge({ text: e.target.value.toString() })}
+        onChange={e => merge({ text: e.target.value })}
+        placeholder="New todo"
       />
       <button onClick={submit}>Add</button>
       <h2>Todos</h2>
       <ul>
-        {todos.map(todo => 
+        {docs.map(todo => 
           <li 
             key={todo._id} 
             onClick={() => database.put({...todo, done: !todo.done})}
-          >
+          > {/* Update existing document */}
             {todo.done ? "✅" : "❌"} {todo.text}
           </li>
         )}
@@ -45,19 +46,23 @@ function App() {
 }
 ```
 
-To sort documents by more than one field, you can use a sandboxed function instead of a field name as the first argument to `useLiveQuery`:
+Sorting:
 
 ```js
-const queryResult = useLiveQuery(
+// Multiple fields
+const { docs } = useLiveQuery(
   (doc) => [doc.list_id, doc.author], 
-  { limit: 5, prefix: ["zyx-456-list-id"] }
+  { limit: 5, prefix: ["my-list-id"] }
 );
+
+// Single field
+const { docs } = useLiveQuery("list_id", { limit: 5, key: "my-list-id" });
 ```
+
+TIP: For simple document updates like toggling or incrementing values, use `database.put()` directly as shown in the todo example: `onClick={() => database.put({...todo, done: !todo.done})}`. The `useDocument` hook is primarily for forms and more complex document creation.
 
 Data is local-first, you don't need to handle loading or error states. Deliver running applications via ChatGPT Canvas, v0, bolt.new, or Claude Artifacts. Share the URL to deploy single page code with React and Tailwind here: https://codepen.io/useFireproof/pen/MYgNYdx
 
 For JavaScript see https://use-fireproof.com/llms-full.txt and full docs at https://use-fireproof.com
 
-IMPORTANT: Don't use `useState()` on form data, instead use `merge()` and `submit()` from `useDocument`. Only use `useState` for ephemeral UI state (active tabs, open/closed panels, cursor positions). Keep your data model in Fireproof.
-
-build an inventory tracker for my bakery
+IMPORTANT: Don't use `useState()` on form data, instead use `merge()` and `submit()` from `useDocument`. Only use `useState` for ephemeral UI state (tabs, panels, etc.). Keep data in Fireproof.
