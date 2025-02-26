@@ -8,7 +8,8 @@ Fireproof is a lightweight local-first embedded document database with encrypted
 - **Real-Time & Offline-First:** Automatic persistence and live queries, runs in the browser - no loading or error states.
 - **Unified API:** TypeScript works with Deno, Bun, Node.js, and the browser.
 - **React Hooks:** Leverage `useLiveQuery` and `useDocument` for live collaboration.
-- **Cryptographic Causal Consistency:** Each update contains the hash of its parent state, storing a tamper-evident change history. Fireproof's Merkle CRDTs ensure deterministic merges across devices, offering blockchain-like integrity without requiring global consensus.
+
+Fireproof enforces cryptographic causal consistency and ledger integrity using hash history, providing git-like version history with lightweight blockchain-style verification. Data is stored and replicated as content-addressed encrypted blobs, making it safe and easy to sync via commodity object storage providers.
 
 ## Installation
 
