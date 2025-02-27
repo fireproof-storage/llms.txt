@@ -406,17 +406,17 @@ Code listing for App.jsx:
 import { useFireproof } from "use-fireproof";
 import { useState, useEffect } from "react";
 
-function ImgFile({ meta, alt, className }) {
+function ImgFile({ file, alt, className }) {
   const [imgDataUrl, setImgDataUrl] = useState("");
   useEffect(() => {
-    if (meta.file && /image/.test(meta.type)) {
-      meta.file().then(file => {
+    if (file && /image/.test(file.type)) {
+      file().then(file => {
         const src = URL.createObjectURL(file);
         setImgDataUrl(src);
         return () => URL.revokeObjectURL(src);
       });
     }
-  }, [meta]);
+  }, [file]);
   return imgDataUrl ? <img className={`${className} max-w-full max-h-60 object-contain`} alt={alt} src={imgDataUrl} /> : null;
 }
 
@@ -442,7 +442,7 @@ export default function App() {
       <div className="grid grid-cols-2 gap-4 mt-2">
         {docs.map(doc => (
           <div key={doc._id} className="border p-2 rounded shadow-sm bg-gray-50">
-            {doc._files?.uploaded && <ImgFile meta={doc._files.uploaded} alt="Uploaded Image" className="w-full h-auto rounded" />}
+            {doc._files?.uploaded && <ImgFile file={doc._files.uploaded} alt="Uploaded Image" className="w-full h-auto rounded" />}
             <p className="text-sm text-gray-700 mt-2">{doc.description || "No description"}</p>
           </div>
         ))}

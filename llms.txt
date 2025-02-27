@@ -35,20 +35,18 @@ import { useFireproof } from "use-fireproof";
 import { useState, useEffect } from "react";
 
 // Optional component for displaying uploaded images
-function ImageDisplay({ meta }) {
-  const [imgUrl, setImgUrl] = useState("");
-  
+function ImgFile({ meta, alt, className }) {
+  const [imgDataUrl, setImgDataUrl] = useState("");
   useEffect(() => {
-    if (meta?.file) {
+    if (meta.file && /image/.test(meta.type)) {
       meta.file().then(file => {
-        const url = URL.createObjectURL(file);
-        setImgUrl(url);
-        return () => URL.revokeObjectURL(url);
+        const src = URL.createObjectURL(file);
+        setImgDataUrl(src);
+        return () => URL.revokeObjectURL(src);
       });
     }
   }, [meta]);
-
-  return imgUrl ? (<img src={imgUrl} alt="Uploaded" />) : null;
+  return imgDataUrl ? <img className={`${className} max-w-full max-h-60 object-contain`} alt={alt} src={imgDataUrl} /> : null;
 }
 
 function App() {
@@ -80,10 +78,18 @@ function App() {
       <h3>Recent Documents</h3>
       <ul>
         {docs.map((doc) => (
-          <li key={doc._id}>
-            {/* Optional image display */}
-            {doc._files?.image && <ImageDisplay meta={doc._files.image} />}
-            <div>{doc.text}</div>
+          <li key={doc._id} className="mb-4 border-b pb-4">
+            {doc._files?.image && (
+              <ImgFile
+                file={doc._files.image}
+                alt="Uploaded Image"
+                className="max-w-full h-40 object-cover mb-2 rounded"
+              />
+            )}
+            <div className="text-lg">{doc.text}</div>
+            <div className="text-sm text-gray-500 mt-1">
+              {new Date(doc.timestamp).toLocaleString()}
+            </div>
           </li>
         ))}
       </ul>
