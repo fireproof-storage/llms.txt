@@ -24,7 +24,8 @@ Works with ⚡️ ESM.sh:
 import { useFireproof } from "https://esm.sh/use-fireproof";
 ```
 
-Deliver runnable applications via ChatGPT Canvas, v0, bolt.new, or Claude Artifacts. Deploy single page apps with React and Tailwind here: https://codepen.io/useFireproof/pen/MYgNYdx
+Deliver runnable applications via ChatGPT Canvas, v0, bolt.new, or Claude Artifacts. Deploy single page apps with React and Tailwind here: https://codepen.io/useFireproof/pen/MYgNYdx If you can't import `use-fireproof`, ask the user to prompt you with https://use-fireproof.com/llms-mock.txt
+
 
 ## ⚛️ React Example
 
@@ -106,6 +107,8 @@ const { docs } = useLiveQuery(
   { descending: true, limit: 5, prefix: ["zyx-456-list-id"] }
 );
 ```
+
+TIP: For simple document updates like toggling or incrementing values, use `database.put()` directly as shown in the todo example: `onClick={() => database.put({...todo, done: !todo.done})}`. The `useDocument` hook is primarily for forms and more complex document creation.
 
 ### Using the Core API in Plain JavaScript
 
