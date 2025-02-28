@@ -1,0 +1,137 @@
+# Fireproof Mock Guide
+
+Fireproof is a lightweight embedded document database with encrypted live sync, designed to make browser apps easy.
+
+Implementation:
+
+```js
+import * as React from "react";
+const useFireproof = (dbName) => {
+  const [state, setState] = React.useState({ database: null, docs: [] });
+  
+  React.useEffect(() => {
+    if (!state.database) {
+      setState(s => ({
+        ...s,
+        database: {
+          put: (doc) => {
+            const docWithId = { ...doc, _id: doc._id || `doc_${Date.now()}_${Math.random()}` };
+            setState(s => ({
+              ...s,
+              docs: s.docs.some(d => d._id === docWithId._id) 
+                ? s.docs.map(d => d._id === docWithId._id ? docWithId : d)
+                : [...s.docs, docWithId]
+            }));
+            return Promise.resolve({ ok: true, id: docWithId._id });
+          },
+          get: (id) => {
+            const doc = state.docs.find(d => d._id === id);
+            return doc ? Promise.resolve(doc) : Promise.reject(new Error(`Document with id ${id} not found`));
+          },
+          del: (idOrDoc) => {
+            const id = typeof idOrDoc === 'string' ? idOrDoc : idOrDoc._id;
+            const docExists = state.docs.some(d => d._id === id);
+            if (docExists) {
+              setState(s => ({ ...s, docs: s.docs.filter(d => d._id !== id) }));
+              return Promise.resolve({ ok: true, id });
+            } else {
+              return Promise.reject(new Error(`Document with id ${id} not found`));
+            }
+          }
+        }
+      }));
+    }
+  }, []);
+  
+  return { 
+    database: state.database,
+    useDocument: (initialDoc = {}) => {
+      const [doc, setDoc] = React.useState(initialDoc);
+      return {
+        doc,
+        merge: (update) => setDoc(current => ({ ...current, ...update })),
+        submit: () => state.database ? state.database.put(doc) : Promise.reject(new Error("Database not initialized"))
+      };
+    },
+    useLiveQuery: (field, options = {}) => {
+      const { docs } = state;
+      let filteredDocs = [...docs];
+      if (typeof field === 'string' && options.key) {
+        filteredDocs = filteredDocs.filter(doc => doc[field] === options.key);
+      } else if (typeof field === 'string' && options.descending !== undefined) {
+        filteredDocs.sort((a, b) => {
+          return options.descending 
+            ? (b[field] || '').toString().localeCompare((a[field] || '').toString())
+            : (a[field] || '').toString().localeCompare((b[field] || '').toString());
+        });
+      } else if (typeof field === 'function') {
+        if (options.prefix && Array.isArray(options.prefix)) {
+          filteredDocs = filteredDocs.filter(doc => {
+            const fieldValues = field(doc);
+            return options.prefix.every((prefix, i) => 
+              fieldValues[i] && fieldValues[i].toString().startsWith(prefix)
+            );
+          });
+        }
+      }
+      if (options.limit && typeof options.limit === 'number') {
+        filteredDocs = filteredDocs.slice(0, options.limit);
+      }
+      return { docs: filteredDocs };
+    }
+  };
+};
+```
+
+React ⚛️ example creating, listing, and toggling todos:
+
+```js
+function App() {
+  const { database, useDocument, useLiveQuery } = useFireproof("my-todos");
+  const { doc, merge, submit } = useDocument({ text: "" });
+  const { docs } = useLiveQuery("_id", { descending: true });
+
+  return (
+    <div>
+      <input 
+        value={doc.text}
+        onChange={e => merge({ text: e.target.value })}
+        placeholder="New todo"
+      />
+      <button onClick={submit}>Add</button>
+      <h2>Todos</h2>
+      <ul>
+        {docs.map(todo => 
+          <li 
+            key={todo._id} 
+            onClick={() => database.put({...todo, done: !todo.done})}
+          > {/* Update existing document */}
+            {todo.done ? "✅" : "❌"} {todo.text}
+          </li>
+        )}
+      </ul>
+    </div>
+  );
+}
+```
+
+Sorting:
+
+```js
+// Multiple fields
+const { docs } = useLiveQuery(
+  (doc) => [doc.list_id, doc.author], 
+  { limit: 5, prefix: ["my-list-id"] }
+);
+
+// Single field
+const { docs } = useLiveQuery("list_id", { limit: 5, key: "my-list-id" });
+```
+
+TIP: For simple document updates like toggling or incrementing values, use `database.put()` directly as shown in the todo example: `onClick={() => database.put({...todo, done: !todo.done})}`. The `useDocument` hook is primarily for forms and more complex document creation.
+
+Data is local-first, you don't need to handle loading or error states. Deliver running applications via ChatGPT Canvas, v0, bolt.new, or Claude Artifacts. Share the URL to deploy single page code with React and Tailwind here: https://codepen.io/useFireproof/pen/MYgNYdx
+
+For JavaScript see https://use-fireproof.com/llms-full.txt and full docs at https://use-fireproof.com
+
+IMPORTANT: Don't use `useState()` on form data, instead use `merge()` and `submit()` from `useDocument`. Only use `useState` for ephemeral UI state (tabs, panels, etc.). Keep data in Fireproof.
