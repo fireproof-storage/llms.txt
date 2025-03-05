@@ -32,23 +32,8 @@ Deliver runnable applications via ChatGPT Canvas, v0, bolt.new, or Claude Artifa
 You can use Fireproof's hooks to build a complete application in a single component. The example below demonstrates both basic document handling and optional file uploads:
 
 ```js
-import { useFireproof } from "use-fireproof";
+import { useFireproof, ImgFile } from "use-fireproof";
 import { useState, useEffect } from "react";
-
-// Optional component for displaying uploaded images
-function ImgFile({ meta, alt, className }) {
-  const [imgDataUrl, setImgDataUrl] = useState("");
-  useEffect(() => {
-    if (meta.file && /image/.test(meta.type)) {
-      meta.file().then(file => {
-        const src = URL.createObjectURL(file);
-        setImgDataUrl(src);
-        return () => URL.revokeObjectURL(src);
-      });
-    }
-  }, [meta]);
-  return imgDataUrl ? <img className={`${className} max-w-full max-h-60 object-contain`} alt={alt} src={imgDataUrl} /> : null;
-}
 
 function App() {
   const { useDocument, useLiveQuery } = useFireproof("my-ledger");

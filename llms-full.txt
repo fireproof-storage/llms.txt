@@ -403,22 +403,8 @@ This React example shows a simple image uploader application that uses Fireproof
 
 Code listing for App.jsx:
 ```js
-import { useFireproof } from "use-fireproof";
+import { useFireproof, ImgFile } from "use-fireproof";
 import { useState, useEffect } from "react";
-
-function ImgFile({ file, alt, className }) {
-  const [imgDataUrl, setImgDataUrl] = useState("");
-  useEffect(() => {
-    if (file && /image/.test(file.type)) {
-      file().then(file => {
-        const src = URL.createObjectURL(file);
-        setImgDataUrl(src);
-        return () => URL.revokeObjectURL(src);
-      });
-    }
-  }, [file]);
-  return imgDataUrl ? <img className={`${className} max-w-full max-h-60 object-contain`} alt={alt} src={imgDataUrl} /> : null;
-}
 
 export default function App() {
   const { useDocument, useLiveQuery } = useFireproof("image-uploads");
