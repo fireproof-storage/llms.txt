@@ -12,7 +12,7 @@ Works with ⚡️ ESM.sh:
 import { useFireproof } from "https://esm.sh/use-fireproof";
 ```
 
-React ⚛️ example creating, listing, and toggling todos:
+Fast and local, no loading or error states required. React ⚛️ example creating, listing, and toggling todos:
 
 ```js
 import { useFireproof } from "use-fireproof";

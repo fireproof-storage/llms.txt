@@ -48,6 +48,8 @@ Documents are JSON-style objects (CBOR) storing application data. Each has an `_
 
 It is best to have more granular documents, e.g. one document per user action, so saving a form or clicking a button should typically create or update a single document, or just a few documents. Avoid patterns that require a single document to grow without bound.
 
+Fireproof is a local database, no loading states required, just empty data states.
+
 ### Basic Example
 
 This example shows Fireproof's concise defaults. Here we only store user data, but get useful sorting without much code.
@@ -183,7 +185,7 @@ function App() {
     await database.put({ list: "xyz", position: 3000 });
   }
   
-  // Query items sorted by position
+  // Query items on list xyz, sorted by position. Note that useLiveQuery('list', { key:'xyz' }) would be the same docs, sorted chronologically by _id
   const queryResult = useLiveQuery(
     (doc) => [doc.list, doc.position], 
     { prefix: ["xyz"] }

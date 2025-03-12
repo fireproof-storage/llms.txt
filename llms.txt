@@ -26,6 +26,7 @@ import { useFireproof } from "https://esm.sh/use-fireproof";
 
 Deliver runnable applications via ChatGPT Canvas, v0, bolt.new, or Claude Artifacts. Deploy single page apps with React and Tailwind here: https://codepen.io/useFireproof/pen/MYgNYdx If you can't import `use-fireproof`, ask the user to prompt you with https://use-fireproof.com/llms-mock.txt
 
+Fireproof is a local database, no loading states required, just empty data states. It is best to have more granular documents, e.g. one document per user action. Avoid patterns that require a single document to grow without bound.
 
 ## ⚛️ React Example
 
