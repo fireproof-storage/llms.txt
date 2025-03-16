@@ -96,6 +96,40 @@ console.log(result.choices[0].message.content);
 For consistent, parseable responses that follow a strict schema, follow this example:
 
 ```typescript
+await fetch('https://openrouter.ai/api/v1/chat/completions', {
+  method: 'POST',
+  headers: {
+    Authorization: 'Bearer <OPENROUTER_API_KEY>',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    model: 'openai/gpt-4',
+    messages: [{ role: 'user', content: 'Give me a todo list' }],
+    response_format: {
+      type: 'json_schema',
+      json_schema: {
+        name: 'todo',
+        strict: true,
+        schema: {
+          type: 'object',
+          properties: {
+            todos: {
+              type: 'array',
+              items: { type: 'string' }
+            }
+          },
+          required: ['todos'],
+          additionalProperties: false
+        }
+      }
+    }
+  })
+})
+```
+
+This shows how to specify more properies:
+
+```typescript
 const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
   method: 'POST',
   headers: {
@@ -491,5 +525,4 @@ Remember to replace `<OPENROUTER_API_KEY>` with your actual API key and you're r
 
 ## Fireproof App Builder notes
 
-If you are in Fireproof app builder, you may already have an API key available at `window.OPENROUTER_API_KEY` you can use it like `Authorization: Bearer ${window.OPENROUTER_API_KEY}`
-
+If you are in Fireproof app builder, you already have an API key available at `window.OPENROUTER_API_KEY` you can use it like `Authorization: Bearer ${window.OPENROUTER_API_KEY}`
