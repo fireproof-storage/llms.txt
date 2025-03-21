@@ -1,0 +1,28 @@
+# TriMet API Guide
+
+Get an API key APP_ID: https://developer.trimet.org/appid/registration/
+
+## Core Methods
+
+### Get Arrivals by Stop ID
+```javascript
+// Returns arrivals for a specific stop
+fetch(`https://developer.trimet.org/ws/V1/arrivals?locIDs=${stopId}&appID=${APP_ID}&json=true`)
+  .then(response => response.json())
+```
+
+### Get Route Information
+```javascript
+// Returns details for specific route(s)
+fetch(`https://developer.trimet.org/ws/V1/routeConfig?routes=${routeId}&appID=${APP_ID}&json=true`)
+  .then(response => response.json())
+```
+
+### Find Stops by Location
+```javascript
+// Returns stops near coordinates (lat,lon)
+fetch(`https://developer.trimet.org/ws/V1/stops?ll=${lat},${lon}&meters=500&appID=${APP_ID}&json=true`)
+  .then(response => response.json())
+```
+
+All endpoints support CORS with `Access-Control-Allow-Origin: *`
