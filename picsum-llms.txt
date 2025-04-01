@@ -1,0 +1,69 @@
+# Picsum API Documentation
+
+A simple API for placeholder images.
+
+## Basic Usage
+
+### Random Image
+```
+https://picsum.photos/200/300
+```
+
+### Square Image
+```
+https://picsum.photos/200
+```
+
+### Specific Image
+
+Use this if you are putting the URL in Fireproof.
+
+```
+https://picsum.photos/id/237/200/300
+```
+
+### Static Random Image
+```
+https://picsum.photos/seed/picsum/200/300
+```
+
+## Image Modifications
+
+### Grayscale
+```
+https://picsum.photos/200/300?grayscale
+```
+
+### Blur
+```
+https://picsum.photos/200/300/?blur
+https://picsum.photos/200/300/?blur=2  # Blur level 1-10
+```
+
+## Advanced Features
+
+### Multiple Images
+```
+<img src="https://picsum.photos/200/300?random=1">
+<img src="https://picsum.photos/200/300?random=2">
+```
+
+### Image Formats
+```
+https://picsum.photos/200/300.jpg
+https://picsum.photos/200/300.webp
+```
+
+## API Endpoints
+
+### List Images
+```
+https://picsum.photos/v2/list
+https://picsum.photos/v2/list?page=2&limit=100
+```
+
+### Image Details
+```
+https://picsum.photos/id/0/info
+https://picsum.photos/seed/picsum/info
+```
